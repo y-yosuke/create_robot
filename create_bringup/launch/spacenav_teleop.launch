@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <node pkg="spacenav" exec="spacenav_node" name="spacenav_node" output="screen">
+    <param name="zero_when_static" value="true"/>
+    <param name="static_count_threshold" value="30"/>
+    <param name="linear_scale/x" value="0.6"/>
+    <param name="angular_scale/z" value="2.4"/>
+    <remap from="/spacenav/twist" to="/cmd_vel" />
+  </node>
+
+</launch>

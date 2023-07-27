@@ -46,6 +46,7 @@ CreateDriver::CreateDriver()
   dev_ = declare_parameter<std::string>("dev", "/dev/ttyUSB0");
   base_frame_ = declare_parameter<std::string>("base_frame", "base_footprint");
   odom_frame_ = declare_parameter<std::string>("odom_frame", "odom");
+  control_mode_ = declare_parameter<std::string>("control_mode", "full");
   latch_duration_ = rclcpp::Duration::from_seconds(declare_parameter<double>("latch_cmd_duration", 0.2));
   loop_hz_ = declare_parameter<double>("loop_hz", 10.0);
   publish_tf_ = declare_parameter<bool>("publish_tf", true);
@@ -82,8 +83,23 @@ CreateDriver::CreateDriver()
 
   RCLCPP_INFO(this->get_logger(), "[CREATE] Connection established.");
 
-  // Start in full control mode
-  robot_->setMode(create::MODE_FULL);
+  RCLCPP_INFO_STREAM(get_logger(), "[CREATE] control_mode: " + control_mode_ + " (ROS Param)");
+  if (control_mode_ == "full" ) {
+    robot_->setMode(create::MODE_FULL);
+    RCLCPP_INFO(this->get_logger(), "[CREATE] MODE_FULL set");
+  }
+  else if (control_mode_ == "safe" ) {
+    robot_->setMode(create::MODE_SAFE);
+    RCLCPP_INFO(this->get_logger(), "[CREATE] MODE_SAFE set");
+  }
+  else if (control_mode_ == "passive" ) {
+    robot_->setMode(create::MODE_PASSIVE);
+    RCLCPP_INFO(this->get_logger(), "[CREATE] MODE_PASSIVE set");
+  }
+  else {
+    // Start in full control mode
+    robot_->setMode(create::MODE_FULL);
+  }
 
   // Show robot's battery level
   RCLCPP_INFO(

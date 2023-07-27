@@ -127,6 +127,7 @@ private:
   std::string dev_;
   std::string base_frame_;
   std::string odom_frame_;
+  std::string control_mode_;
   rclcpp::Duration latch_duration_;
   double loop_hz_;
   bool publish_tf_;
