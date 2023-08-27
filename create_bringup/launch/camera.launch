@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <arg name="compress" default="false" />
+
+  <node name="v4l2_camera" pkg="v4l2_camera" exec="v4l2_camera_node" output="screen" />
+
+  <node if="$(var compress)"
+        name="image_republish" pkg="image_transport" exec="republish" args="raw" output="screen" >
+    <remap from="/in"  to="/image_raw" />
+    <remap from="/out" to="/image_raw/compressed" />
+  </node>
+
+</launch>
