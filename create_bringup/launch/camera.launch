@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <launch>
   
+  <arg name="image_size" default="[640, 480]" />
   <arg name="compress" default="false" />
 
-  <node name="v4l2_camera" pkg="v4l2_camera" exec="v4l2_camera_node" output="screen" />
+  <node name="v4l2_camera" pkg="v4l2_camera" exec="v4l2_camera_node" output="screen" >
+    <param name="pixel_format" value="YUYV" />
+    <param name="image_size" value="$(var image_size)" />
+  </node>
 
   <node if="$(var compress)"
         name="image_republish" pkg="image_transport" exec="republish" args="raw" output="screen" >
